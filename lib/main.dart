@@ -1,5 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/progress.dart';
 
 void main() {
   runApp(const MyApp());
@@ -82,12 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: Drawer(
         backgroundColor: Colors.white,
-       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-        topRight: Radius.circular(20),
-        bottomRight: Radius.circular(20),
-        )
-       ),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        )),
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -109,6 +108,17 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 // Navigate to account page
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.book),
+              title: const Text('Your Progress'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProgressScreen()));
               },
             ),
             ListTile(
@@ -179,11 +189,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 children: <Widget>[
-                  _buildCourseItem('Design Art', Icons.palette, Colors.red[300]!),
-                  _buildCourseItem('Programming', Icons.code, Colors.blue[300]!),
-                  _buildCourseItem('Mathematics', Icons.functions, Colors.green[300]!),
-                  _buildCourseItem('Physics', Icons.science, Colors.orange[300]!),
-                  _buildCourseItem('Machine Learning', Icons.settings, Colors.purple[300]!)
+                  _buildCourseItem(
+                      'Design Art', Icons.palette, Colors.red[300]!),
+                  _buildCourseItem(
+                      'Programming', Icons.code, Colors.blue[300]!),
+                  _buildCourseItem(
+                      'Mathematics', Icons.functions, Colors.green[300]!),
+                  _buildCourseItem(
+                      'Physics', Icons.science, Colors.orange[300]!),
+                  _buildCourseItem(
+                      'Machine Learning', Icons.settings, Colors.purple[300]!)
                 ],
               ),
             ),
@@ -207,8 +222,11 @@ class _MyHomePageState extends State<MyHomePage> {
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Progress'),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings')
+            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Course'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart), label: 'Progress'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: 'Settings')
           ],
         ),
       ),
