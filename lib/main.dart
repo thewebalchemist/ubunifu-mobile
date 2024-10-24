@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/progress.dart';
+import 'package:myapp/screens/course.dart';
+import 'package:myapp/screens/homepage.dart';
+import 'package:myapp/screens/progress.dart'; // Import your settings screen if you have one
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +25,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
 
   @override
@@ -33,11 +34,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
+
+  // Initialize screens list
+  late final List<Widget> _screens = [
+    const HomeScreen(title: 'Homepage',),
+    const CoursePage(courseTitle: 'Courses'),
+    const ProgressPage(),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    // Add navigation logic here
   }
 
   @override
@@ -55,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                      "https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.1819120589.1727913600&semt=ais_hybrid"),
+                    "https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.1819120589.1727913600&semt=ais_hybrid"
+                  ),
                 ),
               ),
             );
@@ -83,10 +92,11 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        )),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -106,7 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.account_circle),
               title: const Text('My Account'),
               onTap: () {
-                // Navigate to account page
                 Navigator.pop(context);
               },
             ),
@@ -115,96 +124,42 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Your Progress'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProgressScreen()));
+                setState(() {
+                  _selectedIndex = 2; // Switch to Progress screen
+                });
               },
             ),
             ListTile(
               leading: const Icon(Icons.school),
               title: const Text('My Courses'),
               onTap: () {
-                // Navigate to courses page
                 Navigator.pop(context);
+                setState(() {
+                  _selectedIndex = 1; // Switch to Courses screen
+                });
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
-                // Navigate to settings page
                 Navigator.pop(context);
+                setState(() {
+                  _selectedIndex = 3; // Switch to Settings screen
+                });
               },
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Logout'),
               onTap: () {
-                // Implement logout functionality
                 Navigator.pop(context);
               },
             ),
           ],
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            RichText(
-              text: const TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Let\'s learn',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 35,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  TextSpan(
-                    text: '\nsomething new',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: GridView.count(
-                padding: const EdgeInsets.all(10),
-                crossAxisCount: 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: <Widget>[
-                  _buildCourseItem(
-                      'Design Art', Icons.palette, Colors.red[300]!),
-                  _buildCourseItem(
-                      'Programming', Icons.code, Colors.blue[300]!),
-                  _buildCourseItem(
-                      'Mathematics', Icons.functions, Colors.green[300]!),
-                  _buildCourseItem(
-                      'Physics', Icons.science, Colors.orange[300]!),
-                  _buildCourseItem(
-                      'Machine Learning', Icons.settings, Colors.purple[300]!)
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _screens[_selectedIndex],
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(5.0),
         decoration: const BoxDecoration(
@@ -223,45 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Course'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.bar_chart), label: 'Progress'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings')
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCourseItem(String title, IconData icon, Color color) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to course page
-        print('Navigating to $title course');
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 60,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Progress'),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings')
           ],
         ),
       ),
