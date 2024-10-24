@@ -1,60 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/course.dart';
 import 'package:myapp/screens/progress.dart';
-
-
+import 'package:myapp/widgets/custom-appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.title}) : super(key: key);
   final String title;
-
-  
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 179, 178, 178),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return GestureDetector(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.1819120589.1727913600&semt=ais_hybrid"),
-                ),
-              ),
-            );
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // Add search functionality
-            },
-            icon: const Icon(Icons.search, size: 30),
-          ),
-          Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                icon: const Icon(Icons.menu, size: 30),
-              );
-            },
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(title: 'Homepage'),
       drawer: Drawer(
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
@@ -165,15 +126,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisSpacing: 20,
                 children: <Widget>[
                   _buildCourseItem(
-                      'Design Art', Icons.palette, Colors.red[300]!),
+                      context, 'Design Art', Icons.palette, Colors.red[300]!, ),
                   _buildCourseItem(
-                      'Programming', Icons.code, Colors.blue[300]!),
+                      context, 'Programming', Icons.code, Colors.blue[300]!),
                   _buildCourseItem(
-                      'Mathematics', Icons.functions, Colors.green[300]!),
+                      context, 'Mathematics', Icons.functions, Colors.green[300]!),
                   _buildCourseItem(
-                      'Physics', Icons.science, Colors.orange[300]!),
+                      context, 'Physics', Icons.science, Colors.orange[300]!),
                   _buildCourseItem(
-                      'Machine Learning', Icons.settings, Colors.purple[300]!)
+                      context, 'Machine Learning', Icons.settings, Colors.purple[300]!),
+                      _buildCourseItem(
+                      context, 'App Development', Icons.mobile_friendly, Colors.pink[300]!)
                 ],
               ),
             ),
@@ -183,11 +146,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCourseItem(String title, IconData icon, Color color) {
+  Widget _buildCourseItem(BuildContext context, String title, IconData icon, Color color) {
     return GestureDetector(
       onTap: () {
-        // Navigate to course page
-        print('Navigating to $title course');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CoursePage(courseTitle: title)));
       },
       child: Container(
         padding: const EdgeInsets.all(10),

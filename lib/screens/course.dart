@@ -47,6 +47,9 @@ class CoursePage extends StatelessWidget {
       case 'Physics':
         outline = ['Mechanics', 'Thermodynamics', 'Electromagnetism', 'Quantum Physics'];
         break;
+      case 'App Development':
+        outline = ['Flutter', 'Widgets', 'Firebase', 'Play Store'];
+        break;
       default:
         outline = ['Introduction', 'Core Concepts', 'Advanced Topics', 'Practical Applications'];
     }
@@ -55,7 +58,7 @@ class CoursePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: outline.map((topic) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Text('• $topic', style: TextStyle(fontSize: 16)),
+        child: Text('+ $topic', style: TextStyle(fontSize: 16)),
       )).toList(),
     );
   }

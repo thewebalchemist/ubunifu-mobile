@@ -17,7 +17,7 @@ class ProgressPage extends StatelessWidget {
               'Course Progress',
             ),
             SizedBox(height: 20),
-            _buildProgressItem(context, 'Design Art', 0.7),
+            _buildProgressItem(context, 'Design Art', 1.0),
             _buildProgressItem(context, 'Programming', 0.5),
             _buildProgressItem(context, 'Mathematics', 0.3),
             _buildProgressItem(context, 'Physics', 0.8),
